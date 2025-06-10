@@ -1,0 +1,15 @@
+server:
+  port: 8888
+wechat:
+  template:
+    template-type: 0
+    templates:
+      - {template-id: "1", template-path: "/Users/chasingwind/IdeaProjects/kafka-study/src/main/resources/template/template.json", is-valid: true}
+      - {template-id: "2", template-path: "/Users/chasingwind/IdeaProjects/kafka-study/src/main/resources/template/template.json", is-valid: false}
+    template-result-file-path: "/Users/chasingwind/IdeaProjects/kafka-study/src/main/resources/template/templateResult.json"
+
+  kafka:
+    bootstrap-servers: "localhost:19092"
+    acks-config: "all"
+    key-serializer: "org.apache.kafka.common.serialization.StringSerializer"
+    value-serializer: "org.apache.kafka.common.serialization.StringSerializer"
