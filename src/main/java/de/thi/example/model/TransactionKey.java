@@ -1,4 +1,4 @@
-package de.thi.mall.model;
+package de.thi.example.model;
 
 import lombok.*;
 

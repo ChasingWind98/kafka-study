@@ -1,15 +1,14 @@
-package de.thi.mall;
+package de.thi.example;
 
-import de.thi.mall.model.Transaction;
-import de.thi.mall.model.TransactionKey;
-import de.thi.mall.model.TransactionPattern;
-import de.thi.mall.model.TransactionReward;
-import de.thi.mall.serdes.JsonSerdes;
+import de.thi.example.model.Transaction;
+import de.thi.example.model.TransactionKey;
+import de.thi.example.model.TransactionPattern;
+import de.thi.example.model.TransactionReward;
+import de.thi.example.serdes.JsonSerdes;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.*;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.processor.api.*;
-import org.apache.kafka.streams.processor.api.Record;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.StoreBuilder;
 import org.apache.kafka.streams.state.Stores;

@@ -1,10 +1,10 @@
-package de.thi.mall.serdes;
+package de.thi.example.serdes;
 
 import org.apache.kafka.common.serialization.Deserializer;
 
 import java.io.IOException;
 
-import static de.thi.mall.serdes.JsonSerialization.MAPPER;
+import static de.thi.example.serdes.JsonSerialization.MAPPER;
 
 class JsonDeserialization<T> implements Deserializer<T> {
 

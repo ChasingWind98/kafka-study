@@ -1,14 +1,42 @@
-package de.thi.mall.serdes;
+package de.thi.example.serdes;
 
-import de.thi.mall.model.Transaction;
-import de.thi.mall.model.TransactionKey;
-import de.thi.mall.model.TransactionPattern;
-import de.thi.mall.model.TransactionReward;
+import de.thi.example.model.*;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serializer;
 
 public class JsonSerdes {
+
+    public static NetTrafficWrapSerde NetTraffic() {
+        return new NetTrafficWrapSerde(new JsonSerialization<>(), new JsonDeserialization<>(NetTraffic.class));
+    }
+
+    public final static class NetTrafficWrapSerde extends WrapSerde<NetTraffic> {
+        public NetTrafficWrapSerde(Serializer<NetTraffic> serializer, Deserializer<NetTraffic> deserializer) {
+            super(serializer, deserializer);
+        }
+    }
+
+    public static SalesStatsWrapSerde SalesStats() {
+        return new SalesStatsWrapSerde(new JsonSerialization<>(), new JsonDeserialization<>(SalesStats.class));
+    }
+
+    public final static class SalesStatsWrapSerde extends WrapSerde<SalesStats> {
+        public SalesStatsWrapSerde(Serializer<SalesStats> serializer, Deserializer<SalesStats> deserializer) {
+            super(serializer, deserializer);
+        }
+    }
+
+    public static SalesWrapSerde Sales() {
+        return new SalesWrapSerde(new JsonSerialization<>(), new JsonDeserialization<>(Sales.class));
+    }
+
+    public final static class SalesWrapSerde extends WrapSerde<Sales> {
+        public SalesWrapSerde(Serializer<Sales> serializer, Deserializer<Sales> deserializer) {
+            super(serializer, deserializer);
+        }
+    }
+
 
     public static TransactionWrapSerde Transaction() {
         return new TransactionWrapSerde(new JsonSerialization<>(), new JsonDeserialization<>(Transaction.class));

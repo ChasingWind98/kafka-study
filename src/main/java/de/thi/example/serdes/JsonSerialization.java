@@ -1,4 +1,4 @@
-package de.thi.mall.serdes;
+package de.thi.example.serdes;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
