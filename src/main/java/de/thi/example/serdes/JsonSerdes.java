@@ -7,6 +7,36 @@ import org.apache.kafka.common.serialization.Serializer;
 
 public class JsonSerdes {
 
+    public static ShootStatsWrapSerde ShootStats() {
+        return new ShootStatsWrapSerde(new JsonSerialization<>(), new JsonDeserialization<>(ShootStats.class));
+    }
+
+    public final static class ShootStatsWrapSerde extends WrapSerde<ShootStats> {
+        public ShootStatsWrapSerde(Serializer<ShootStats> serializer, Deserializer<ShootStats> deserializer) {
+            super(serializer, deserializer);
+        }
+    }
+
+    public static ShootWrapSerde Shoot() {
+        return new ShootWrapSerde(new JsonSerialization<>(), new JsonDeserialization<>(Shoot.class));
+    }
+
+    public final static class ShootWrapSerde extends WrapSerde<Shoot> {
+        public ShootWrapSerde(Serializer<Shoot> serializer, Deserializer<Shoot> deserializer) {
+            super(serializer, deserializer);
+        }
+    }
+
+    public static EmployeeWrapSerde Employee() {
+        return new EmployeeWrapSerde(new JsonSerialization<>(), new JsonDeserialization<>(Employee.class));
+    }
+
+    public final static class EmployeeWrapSerde extends WrapSerde<Employee> {
+        public EmployeeWrapSerde(Serializer<Employee> serializer, Deserializer<Employee> deserializer) {
+            super(serializer, deserializer);
+        }
+    }
+
     public static NetTrafficWrapSerde NetTraffic() {
         return new NetTrafficWrapSerde(new JsonSerialization<>(), new JsonDeserialization<>(NetTraffic.class));
     }

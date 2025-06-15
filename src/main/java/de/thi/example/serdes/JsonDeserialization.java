@@ -19,7 +19,7 @@ class JsonDeserialization<T> implements Deserializer<T> {
     public T deserialize(String topic, byte[] data) {
         try {
             return MAPPER.readValue(data, deserializedClass);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

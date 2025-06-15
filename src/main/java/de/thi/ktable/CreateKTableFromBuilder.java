@@ -1,0 +1,76 @@
+package de.thi.ktable;
+
+import de.thi.example.model.Sales;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.utils.Bytes;
+import org.apache.kafka.streams.*;
+import org.apache.kafka.streams.kstream.Consumed;
+import org.apache.kafka.streams.kstream.KTable;
+import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.kstream.Printed;
+import org.apache.kafka.streams.state.KeyValueStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
+
+public class CreateKTableFromBuilder {
+    private static final Logger log = LoggerFactory.getLogger(CreateKTableFromBuilder.class);
+
+    //0. 定义一些常量
+    private static final String BOOTSTRAP_SERVERS = "localhost:19092";
+    private static final String APPLICATION_ID = "ktable_from_builder_app_id";
+    //消息结构
+    private static final String USER_INFO_TOPIC = "users.info";
+
+
+    public static void main(String[] args) throws InterruptedException {
+        Properties properties = new Properties();
+        properties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+        properties.put(StreamsConfig.APPLICATION_ID_CONFIG, APPLICATION_ID);
+        //设置StateStore的位置 默认是 /tmp/kafka-streams
+        properties.put(StreamsConfig.STATE_DIR_CONFIG, "/Users/chasingwind/Kafka/statestore");
+        //设置线程数 跟Partition数一致
+        properties.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 3);
+
+
+        StreamsBuilder builder = new StreamsBuilder();
+        // <alex,wang>  <alex,wu>
+        KTable<String, String> kt0 = builder.table(USER_INFO_TOPIC, Consumed.with(Serdes.String(), Serdes.String())
+                        .withName("users-info-processor").withOffsetResetPolicy(AutoOffsetReset.latest()),
+                Materialized.<String, String, KeyValueStore<Bytes, byte[]>>as("user-info-state-store")
+        );
+
+        kt0.toStream().print(Printed.<String, String>toSysOut().withLabel("ktable-print"));
+
+
+        //3. create Topology
+        Topology topology = builder.build();
+        //4. create KafkaStreams
+        KafkaStreams streams = new KafkaStreams(topology, properties);
+
+        CountDownLatch latch = new CountDownLatch(1);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            streams.close();
+            latch.countDown();
+            log.info("Streams closed");
+        }));
+
+        //5. start KafkaStream
+        streams.start();
+        log.info("Streams started");
+        //6. graceful shutdown
+        latch.await();
+
+
+    }
+
+
+    private static Sales populateSales(Sales sales) {
+        if (sales.getSalesAmount() != sales.getTotalSalesAmount()) {
+            sales.setTotalSalesAmount(sales.getSalesAmount());
+        }
+        return sales;
+    }
+}
